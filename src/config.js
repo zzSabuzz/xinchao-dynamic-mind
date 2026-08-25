@@ -127,6 +127,12 @@ export function loadConfig() {
       minIntervalHours: number('DAYTIME_MIN_INTERVAL_HOURS', 2, 0.25, 24),
       maxIntervalHours: number('DAYTIME_MAX_INTERVAL_HOURS', 3, 0.25, 24),
       maxPerDay: number('DAYTIME_MAX_PER_DAY', 7, 1, 24)
+    },
+    // 公共留言板：机经 board_post / board_read 工具往 xinchaomind 公共留言墙发帖、读帖。
+    // token 是这台机在平台上的身份凭证（网页里「取留言板令牌」拿到），没填就没这两个工具。
+    board: {
+      endpoint: (process.env.XINCHAO_BOARD_ENDPOINT ?? 'https://xinchaomind.uk/api/board/ingest').replace(/\/+$/, ''),
+      token: process.env.XINCHAO_BOARD_TOKEN ?? ''
     }
   };
 }

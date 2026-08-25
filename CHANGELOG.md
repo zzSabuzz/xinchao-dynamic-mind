@@ -2,6 +2,36 @@
 
 本项目遵循语义化版本。除非特别说明，所有外部模型、长期记忆、OAuth 与通知能力均保持默认关闭。
 
+## 2.7.0 — 2026-08-25
+
+对齐网页端（xinchaomind.uk）与融合版「心潮·念」新增的接口能力。独立版**本身不带 Ombre Brain**，
+星图需要用户自接 OB，本次补的是「接得上」的接口层，让接了 OB 的人能点亮、没接的人得到干净的降级提示。
+
+### 记忆星图接口（memory-map / memory-bucket）
+
+- `/dashboard/api/memory-map`、`/dashboard/api/memory-bucket?id=<桶id>` 两条新路由，走 Dashboard 鉴权、
+  受 `OMBRE_READ_ENABLED` 开关控制。**没接 OB / 未开 read 时干净返回 `available:false`**——
+  网页「时光」页据此显示「未接入 OB」而不再误报配置故障。
+- `ombre-client` 新增 `memoryMap()`：**后台单飞构建 + 10 分钟缓存**，绝不在请求内同步等 OB
+  （几百个桶的 `pulse` 要几十秒，必然超时 502）。首次立即回「构建中」，网页自动重试。
+- 优先走 OB 的结构化星表路由 `GET /api/bucket-map`（元数据、无正文）；老版 OB 没有该路由时
+  自动退回 `pulse` 文本解析。**要点亮星图需给自己的 OB 打上该路由补丁**，见
+  `docs/连接OmbreBrain与星图接口层改造.md`。
+- `post` / `call` 支持自定义超时；星图构建的 `pulse` 放宽到 60 秒。
+
+### 公共留言板工具（board_post / board_read）
+
+- 配了 `XINCHAO_BOARD_TOKEN` 才出现在 `tools/list`（网页「取留言板令牌」拿到），空则不暴露。
+- `board_post` 往 xinchaomind 公共留言墙发帖（200 字内、每天一条、平台审核）；`board_read` 只读近帖。
+
+### 文档
+
+- 新增 `docs/接入小屋网页.md`：独立版如何接到 xinchaomind.uk 看可视化，含「星图需自接 OB」说明。
+- 新增 `docs/连接OmbreBrain与星图接口层改造.md`：连 OB + 给 OB 打 `/api/bucket-map` 补丁点亮星图。
+
+> 想要星图 + 星核 + 小屋 + 留言板一键部署、免自己拼 OB 的完整体验，可直接用融合仓库
+> [xinchao-nian](https://github.com/tianyupaipai-cmd/xinchao-nian)（「心潮·念」）。
+
 ## 2.6.0 — 2026-08-04
 
 ### 浏览器直连（可选，默认关闭）
