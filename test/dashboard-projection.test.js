@@ -6,7 +6,7 @@ import { DRIVE_KEYS } from '../src/dimensions.js';
 
 function config(overrides = {}) {
   return {
-    identity: { agentName: '顾川', notificationRecipient: '派派' },
+    identity: { agentName: '小机', notificationRecipient: '人类' },
     shadowMode: false,
     context: { enabled: true },
     mcp: { enabled: true },

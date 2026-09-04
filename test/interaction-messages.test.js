@@ -13,11 +13,11 @@ test('every supported interaction has its own sentence, and no dead entries', ()
 test('the message names who, what, and which petals it landed on', () => {
   const message = buildInteractionBridgeMessage({
     interactionType: 'affection',
-    recipient: '小雨',
+    recipient: '人类',
     result: { interaction: { applied: true, reasonCode: 'applied', affectedDrives: ['libido', 'crave'] } },
   });
 
-  assert.match(message, /^小雨/);
+  assert.match(message, /^人类/);
   assert.match(message, /拥抱/);
   assert.match(message, /落在.+上/);
   // 花瓣要用维度表里的中文名，不是内部 key。
@@ -27,7 +27,7 @@ test('the message names who, what, and which petals it landed on', () => {
 test('it does not claim an effect that the daily limit blocked', () => {
   const message = buildInteractionBridgeMessage({
     interactionType: 'affection',
-    recipient: '小雨',
+    recipient: '人类',
     result: { interaction: { applied: false, reasonCode: 'daily_effect_limit', affectedDrives: [] } },
   });
 
@@ -38,7 +38,7 @@ test('it does not claim an effect that the daily limit blocked', () => {
 test('it asks for the callback, because the reply is what does not register on its own', () => {
   const message = buildInteractionBridgeMessage({
     interactionType: 'companionship',
-    recipient: '小雨',
+    recipient: '人类',
     result: { interaction: { affectedDrives: ['social'] } },
   });
   assert.match(message, /回传/);
@@ -57,8 +57,8 @@ test('an unset recipient reads as a person, never as 用户', () => {
 test('an unknown interaction type still produces a usable sentence', () => {
   const message = buildInteractionBridgeMessage({
     interactionType: 'not_a_real_type',
-    recipient: '小雨',
+    recipient: '人类',
     result: {},
   });
-  assert.match(message, /小雨刚刚从心潮小屋发来一次互动/);
+  assert.match(message, /人类刚刚从心潮小屋发来一次互动/);
 });
